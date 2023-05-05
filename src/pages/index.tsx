@@ -1,58 +1,153 @@
+//import { count } from 'console';
+import { useState } from 'react';
 import styles from './index.module.css';
 
 const Home = () => {
+  const [userInputs, setUserInputs] = useState([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]);
+  const [bombMap, setBombMap] = useState([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]);
+  const direction = [
+    [0, 1],
+    [1, 1],
+    [1, 0],
+    [1, -1],
+    [0, -1],
+    [-1, -1],
+    [-1, 0],
+    [-1, 1],
+  ];
+  console.log('a');
+  const board: number[][] = [
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  ];
+  const newUserInputs: number[][] = JSON.parse(JSON.stringify(userInputs));
+  ////
+  const setBombRandom = (x: number, y: number) => {
+    bombMap[y][x] = 1;
+    const a = Math.floor(Math.random() * 9);
+    const b = Math.floor(Math.random() * 9);
+    if (bombMap[a][b] === 0) {
+      bombMap[a][b] = 1;
+    } else {
+      setBombRandom(a, b);
+    }
+    bombMap[y][x] = 0;
+    setBombMap(bombMap);
+  };
+  ////
+  const checkAround = (x: number, y: number) => {
+    //console.log('a');
+    //console.log(y, x);
+    board[y][x] = 0;
+    for (let k = 0; k < 2; k++) {
+      //console.log('i');
+      if (board[y][x] === 0) {
+        //console.log('u');
+        for (const d of direction) {
+          //console.log('e');
+          if (k) {
+            //console.log('o');
+            if (
+              board[y + d[1]] != undefined &&
+              board[x + d[0]] != undefined &&
+              board[y + d[1]][x + d[0]] === -1 &&
+              bombMap[y + d[1]][x + d[0]] === 0
+            ) {
+              //console.log(y, x);
+              checkAround(x + d[0], y + d[1]);
+            }
+          } else {
+            //console.log('ki');
+            if (
+              bombMap[y + d[1]] != undefined &&
+              bombMap[x + d[0]] != undefined &&
+              bombMap[y + d[1]][x + d[0]] === 1
+            ) {
+              //console.log('ku');
+              board[y][x] += 1;
+              console.log(y, x);
+              //console.log(d);
+            }
+          }
+        }
+      }
+    }
+    console.log('newboard');
+    console.table(board);
+  };
+  ////
+  const makeBoard = () => {
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+        if (newUserInputs[j][i] === 1) {
+          checkAround(i, j);
+        }
+      }
+    }
+  };
+  ////
+  const clickCell = (x: number, y: number) => {
+    if (newUserInputs.some((row: number[]) => row.includes(1))) {
+      //
+    } else {
+      for (let b = 0; b < 10; b++) {
+        setBombRandom(x, y);
+      }
+    }
+    newUserInputs[y][x] = 1;
+    console.log('newUserInputs');
+    console.table(newUserInputs);
+    console.log('bombMap');
+    console.table(bombMap);
+    console.log('board');
+    console.table(board);
+    setUserInputs(newUserInputs);
+  };
+  makeBoard();
+
+  //console.log('end');
   return (
     <div className={styles.container}>
-      <main className={styles.main}>
-        <div className= {styles.icon}/>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code} style={{ backgroundColor: '#fafafa' }}>
-            pages/index.js
-          </code>
-        </p>
-
-        <div className={styles.grid}>
-          <a className={styles.card} href="https://nextjs.org/docs">
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a className={styles.card} href="https://nextjs.org/learn">
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a className={styles.card} href="https://github.com/vercel/next.js/tree/master/examples">
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            className={styles.card}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>Instantly deploy your Next.js site to a public URL with Vercel.</p>
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <img src="vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <div className={styles.board}>
+        {board.map((row: number[], y) =>
+          row.map((cell, x) => (
+            <div className={styles.cell} key={`${x}-${y}`} onClick={() => clickCell(x, y)}>
+              {cell === -1 && (
+                <div className={styles.tile} style={{}}>
+                  {cell}
+                </div>
+              )}
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };
