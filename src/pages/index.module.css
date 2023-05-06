@@ -1,31 +1,50 @@
 .icon {
-  width: 9999px;
+  width: 30px;
   height: 30px;
+  background: url('~/assets/images/icons.png');
+}
+
+.nikkori {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
   background: url('~/assets/images/icons.png');
 }
 
 .container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  height: 100vh;
-  min-height: 100vh;
-  padding: 0 0.5rem;
-  background-color: rgb(255 255 255);
+  align-items: center;
+  height: 100%;
+  width: 100%;
 }
 
 .board {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   height: 270px;
   width: 270px;
   background-color: #bbb;
   border: 1px solid #000;
 }
 
+.flag {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background: url('~/assets/images/icons.png');
+}
+
 .cell {
   display: flex;
+  position: relative;
   justify-content: center;
   align-items: center;
   height: 100%;
