@@ -89,26 +89,6 @@
   margin: 0 auto;
 }
 
-.flag {
-  display: flex;
-  position: absolute;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  background: url('~/assets/images/icons.png');
-}
-
-.cell {
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  background: url('~/assets/images/icons.png');
-}
-
 .border {
   display: flex;
   justify-content: center;
@@ -116,6 +96,16 @@
   height: 11.1111%;
   width: 11.1111%;
   border: 1px solid #ddd;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background: url('~/assets/images/icons.png');
 }
 
 .tile {
@@ -131,14 +121,39 @@
   border-bottom: 5px solid #bbb;
 }
 
-/*
-.tile:hover {
+.flag {
   display: flex;
+  position: absolute;
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 100%;
-  background-color: #bbb;
-  border: 5px solid #bbb;
+  background: url('~/assets/images/icons.png');
 }
-*/
+
+.batu {
+  display: block;
+  position: absolute;
+  position: relative;
+  width: 30px;
+  height: 30px;
+}
+
+.batu::before,
+.batu::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3px; /* 棒の幅（太さ） */
+  height: 27px; /* 棒の高さ */
+  background: #f00; /* バツ印の色 */
+}
+
+.batu::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.batu::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
